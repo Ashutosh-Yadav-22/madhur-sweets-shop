@@ -5,13 +5,13 @@ export default function Menu({ products, shopPhone }) {
   const [searchQuery, setSearchQuery] = useState(""); // State for the search bar
   const categories = ["All", "Sweets", "Namkeen", "Snacks"];
 
-  // Advanced Filter: Checks BOTH Category AND Search Query
-  const filteredProducts = products.filter(p => {
+  // Advanced Filter: Checks BOTH Category AND Search Query (FIXED: Added Array.isArray check)
+  const filteredProducts = Array.isArray(products) ? products.filter(p => {
     const matchesCategory = selectedCategory === "All" || p.category === selectedCategory;
     const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           p.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
-  });
+  }) : [];
 
   const orderProduct = (product) => {
     // Uses the dynamic phone number from the database!

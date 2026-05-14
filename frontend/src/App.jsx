@@ -14,12 +14,12 @@ function App() {
 
   const fetchData = async () => {
     try {
-      // Fetch Products
-      const productRes = await axios.get('import.meta.env.VITE_API_URL/products');
+      // Fetch Products (FIXED: Removed single quotes, used backticks for variables)
+      const productRes = await axios.get(`${import.meta.env.VITE_API_URL}/products`);
       setProducts(productRes.data);
       
-      // Fetch Admin Phone Number
-      const phoneRes = await axios.get('import.meta.env.VITE_API_URL/admin/phone');
+      // Fetch Admin Phone Number (FIXED: Removed single quotes, used backticks for variables)
+      const phoneRes = await axios.get(`${import.meta.env.VITE_API_URL}/admin/phone`);
       if (phoneRes.data.phone) {
         setShopPhone(phoneRes.data.phone);
       }
