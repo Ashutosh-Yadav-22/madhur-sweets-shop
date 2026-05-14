@@ -10,16 +10,16 @@ import Footer from './components/Footer';
 
 function App() {
   const [products, setProducts] = useState([]);
-  const [shopPhone, setShopPhone] = useState("919000000000"); // Default fallback
+  const [shopPhone, setShopPhone] = useState("919510936360"); // Default fallback
 
   const fetchData = async () => {
     try {
       // Fetch Products
-      const productRes = await axios.get('http://localhost:5000/api/products');
+      const productRes = await axios.get('import.meta.env.VITE_API_URL/products');
       setProducts(productRes.data);
       
       // Fetch Admin Phone Number
-      const phoneRes = await axios.get('http://localhost:5000/api/admin/phone');
+      const phoneRes = await axios.get('import.meta.env.VITE_API_URL/admin/phone');
       if (phoneRes.data.phone) {
         setShopPhone(phoneRes.data.phone);
       }
