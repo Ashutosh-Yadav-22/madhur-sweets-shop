@@ -13,20 +13,21 @@ function App() {
   const [shopPhone, setShopPhone] = useState("919510936360"); // Default fallback
 
   const fetchData = async () => {
-    try {
-      // Fetch Products (FIXED: Removed single quotes, used backticks for variables)
-      const productRes = await axios.get(`${import.meta.env.VITE_API_URL}/products`);
-      setProducts(productRes.data);
-      
-      // Fetch Admin Phone Number (FIXED: Removed single quotes, used backticks for variables)
-      const phoneRes = await axios.get(`${import.meta.env.VITE_API_URL}/admin/phone`);
-      if (phoneRes.data.phone) {
-        setShopPhone(phoneRes.data.phone);
+      try {
+        // 🟢 Added the same fallback here so your menu items will load!
+        const API_BASE = import.meta.env.VITE_API_URL || 'https://madhur-backend.onrender.com/api';
+        
+        const productRes = await axios.get(`${API_BASE}/products`);
+        setProducts(productRes.data);
+        
+        const phoneRes = await axios.get(`${API_BASE}/admin/phone`);
+        if (phoneRes.data.phone) {
+          setShopPhone(phoneRes.data.phone);
+        }
+      } catch (err) {
+        console.error("Failed to fetch data", err);
       }
-    } catch (err) {
-      console.error("Failed to fetch data", err);
-    }
-  };
+    };
 
   useEffect(() => {
     fetchData();

@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function AdminPanel({ products, fetchProducts }) {
+  // 🟢 Bulletproof API URL: Uses your env variable, or falls back to Render if Vercel misses it
+  const API_BASE = import.meta.env.VITE_API_URL || 'https://madhur-backend.onrender.com/api';
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isSetupNeeded, setIsSetupNeeded] = useState(false);
   const [phoneInput, setPhoneInput] = useState("");
@@ -17,7 +20,7 @@ export default function AdminPanel({ products, fetchProducts }) {
   useEffect(() => {
     const checkAdminSetup = async () => {
       try {
-        const res = await axios.get(import.meta.env.VITE_API_URL + '/admin/check');
+        const res = await axios.get(`${API_BASE}/admin/check`);
         setIsSetupNeeded(!res.data.isSetup);
       } catch (err) {
         console.error("Error checking admin status", err);
@@ -29,7 +32,7 @@ export default function AdminPanel({ products, fetchProducts }) {
   const handleSetupAccount = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(import.meta.env.VITE_API_URL+ '/admin/setup', { phone: phoneInput, password: passwordInput });
+      await axios.post(`${API_BASE}/admin/setup`, { phone: phoneInput, password: passwordInput });
       alert("Account Setup Successful! You are now logged in.");
       setIsSetupNeeded(false);
       setIsAuthenticated(true);
@@ -41,7 +44,7 @@ export default function AdminPanel({ products, fetchProducts }) {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(import.meta.env.VITE_API_URL + '/admin/login', { phone: phoneInput, password: passwordInput });
+      const res = await axios.post(`${API_BASE}/admin/login`, { phone: phoneInput, password: passwordInput });
       if (res.data.success) {
         setIsAuthenticated(true);
       }
@@ -67,7 +70,7 @@ export default function AdminPanel({ products, fetchProducts }) {
     if (imageFile) data.append('image', imageFile);
 
     try {
-      await axios.post(import.meta.env.VITE_API_URL + '/products', data, {
+      await axios.post(`${API_BASE}/products`, data, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       alert('Product Added Successfully!');
@@ -82,7 +85,7 @@ export default function AdminPanel({ products, fetchProducts }) {
 
   const updatePrice = async (id) => {
     try {
-      await axios.put(import.meta.env.VITE_API_URL + `/products/${id}`, { price: newPrice });
+      await axios.put(`${API_BASE}/products/${id}`, { price: newPrice });
       setEditPriceId(null);
       setNewPrice("");
       fetchProducts();
@@ -94,7 +97,7 @@ export default function AdminPanel({ products, fetchProducts }) {
   const deleteProduct = async (id) => {
     if(window.confirm("Are you sure you want to delete this item?")) {
       try {
-        await axios.delete(import.meta.env.VITE_API_URL + `/products/${id}`);
+        await axios.delete(`${API_BASE}/products/${id}`);
         fetchProducts();
       } catch (err) {
         alert("Error deleting product");
@@ -105,7 +108,7 @@ export default function AdminPanel({ products, fetchProducts }) {
   const handleUpdateCredentials = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.put(import.meta.env.VITE_API_URL + '/admin/update', updateData);
+      const res = await axios.put(`${API_BASE}/admin/update`, updateData);
       if (res.data.success) {
         alert("Settings Updated! Please log in again with your new credentials.");
         handleLogout(); 
