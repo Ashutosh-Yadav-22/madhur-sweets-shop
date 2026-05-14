@@ -57,7 +57,7 @@ export default function Menu({ products, shopPhone }) {
           {filteredProducts.map(product => (
             <div key={product._id} className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col hover:-translate-y-2 transition duration-300 border border-orange-50">
               <div className="h-48 overflow-hidden">
-                <img src={`http://localhost:5000${product.imageUrl}`} alt={product.name} className="w-full h-full object-cover hover:scale-110 transition duration-500" />
+                <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover hover:scale-110 transition duration-500" />
               </div>
               <div className="p-5 flex-grow flex flex-col">
                 <span className="text-xs font-bold text-orange-500 uppercase tracking-widest">{product.category}</span>
